@@ -4,11 +4,16 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
+#include <iomanip>
 
 std::vector<std::vector<int>> read_file();
 std::vector<std::vector<int>> add_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size);
 void print_matrix(std::vector<std::vector<int>> matrix, int matrix_size);
 std::vector<std::vector<int>> multiply_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size);
+void get_matrix_diagonal_sums(std::vector<std::vector<int>> matrix, int matrix_size);
+std::vector<std::vector<int>> swap_rows(std::vector<std::vector<int>> matrix, int index_1, int index_2);
+std::vector<std::vector<int>> swap_cols(std::vector<std::vector<int>> matrix, int col_1, int col_2);
 
 
 
@@ -72,6 +77,22 @@ int main(){
     print_matrix(multiply_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
     std::cout << "\n";
 
+    std::cout << "Diagonal sums for Matrix A:\n";
+    get_matrix_diagonal_sums(matrix_a, matrix_size);
+    std::cout << "\n";
+
+    std::cout << "Problem 5 - Rows 0 and 2 Swapped\n";
+    print_matrix(swap_rows(matrix_a, 0, 2),matrix_size); // Not entirely sure if I was supposed to get user input for this :(
+    std::cout << "\n";
+
+    std::cout << "Problem 6 - Columns 0 and 2 Swapped\n";
+    print_matrix(swap_cols(matrix_a, 0, 2),matrix_size);
+    std::cout << "\n";
+
+
+    
+
+
 
 
     return 0;
@@ -111,4 +132,60 @@ std::vector<std::vector<int>>  multiply_matrices(std::vector<std::vector<int>> m
         }
     }
     return new_matrix;
+}
+
+void get_matrix_diagonal_sums(std::vector<std::vector<int>> matrix, int matrix_size){
+    // finds sum of main diagonal (top left to bottom right)
+    int main_diagonal = 0;
+    for(int row = 0; row < matrix_size; row++){
+        int col = row;
+        main_diagonal += matrix[row][col];
+    }
+
+    //finds sum of secondary diagonal (top right to bottom left)
+    int secondary_diagonal = 0;
+    for(int row = matrix_size - 1; row >= 0; row--){
+        int col = (matrix_size - 1) - row;
+        secondary_diagonal += matrix[row][col];
+    }
+
+    std::cout << std::fixed << std::setprecision(1) << "Main diagonal sum: " << main_diagonal << "\n"; 
+    std::cout << std::fixed << std::setprecision(1) << "Secondary diagonal sum: " << secondary_diagonal << "\n"; 
+}
+
+std::vector<std::vector<int>> swap_rows(std::vector<std::vector<int>> matrix, int index_1, int index_2){
+    if (index_1 >= 0 && index_1 < matrix.size()){
+        if(index_2 >= 0 && index_2 < matrix.size()){
+            std::swap(matrix[index_1], matrix[index_2]);
+        }
+        else{
+            throw std::invalid_argument("row index not in range");
+        }
+    }
+    else{
+        throw std::invalid_argument("row index not in range");
+    }
+    return matrix;
+}
+
+std::vector<std::vector<int>> swap_cols(std::vector<std::vector<int>> matrix, int col_1, int col_2){
+    // create an identity matrix
+    std::vector<std::vector<int>> identity_matrix(matrix.size(), std::vector<int>(matrix.size(), 0));
+    for (int i = 0; i < matrix.size(); ++i) {
+        identity_matrix[i][i] = 1;
+    }
+
+    if (col_1 >= 0 && col_1 < matrix.size()){
+        if(col_2 >= 0 && col_2 < matrix.size()){
+            std::swap(identity_matrix[col_1], identity_matrix[col_2]);
+        }
+        else{
+            throw std::invalid_argument("col index not in range");
+        }
+    }
+    else{
+        throw std::invalid_argument("col index not in range");
+    }
+
+    return multiply_matrices(matrix, identity_matrix, matrix.size());
 }
