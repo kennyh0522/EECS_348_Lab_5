@@ -14,6 +14,7 @@ std::vector<std::vector<int>> multiply_matrices(std::vector<std::vector<int>> ma
 void get_matrix_diagonal_sums(std::vector<std::vector<int>> matrix, int matrix_size);
 std::vector<std::vector<int>> swap_rows(std::vector<std::vector<int>> matrix, int index_1, int index_2);
 std::vector<std::vector<int>> swap_cols(std::vector<std::vector<int>> matrix, int col_1, int col_2);
+std::vector<std::vector<int>> update_value(std::vector<std::vector<int>> matrix, int row, int col, int value);
 
 
 
@@ -61,19 +62,19 @@ int main(){
 
     }
 
-    std::cout << "Matrix A\n";
+    std::cout << "Matrix A:\n";
     print_matrix(matrix_a, matrix_size);
     std::cout << "\n";
 
-    std::cout << "Matrix B\n";
+    std::cout << "Matrix B:\n";
     print_matrix(matrix_b, matrix_size);
     std::cout << "\n";
 
-    std::cout << "A + B\n";
+    std::cout << "A + B:\n";
     print_matrix(add_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
     std::cout << "\n";
 
-    std::cout << "A * B\n";
+    std::cout << "A * B:\n";
     print_matrix(multiply_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
     std::cout << "\n";
 
@@ -81,15 +82,17 @@ int main(){
     get_matrix_diagonal_sums(matrix_a, matrix_size);
     std::cout << "\n";
 
-    std::cout << "Problem 5 - Rows 0 and 2 Swapped\n";
+    std::cout << "Problem 5 - Rows 0 and 2 Swapped:\n";
     print_matrix(swap_rows(matrix_a, 0, 2),matrix_size); // Not entirely sure if I was supposed to get user input for this :(
     std::cout << "\n";
 
-    std::cout << "Problem 6 - Columns 0 and 2 Swapped\n";
+    std::cout << "Problem 6 - Columns 0 and 2 Swapped:\n";
     print_matrix(swap_cols(matrix_a, 0, 2),matrix_size);
     std::cout << "\n";
 
-
+    std::cout << "Problem 7 - Updated matrix:\n";
+    print_matrix(update_value(matrix_a, 1, 2, 99), matrix_size);
+    std::cout << "\n";
     
 
 
@@ -188,4 +191,21 @@ std::vector<std::vector<int>> swap_cols(std::vector<std::vector<int>> matrix, in
     }
 
     return multiply_matrices(matrix, identity_matrix, matrix.size());
+}
+
+std::vector<std::vector<int>> update_value(std::vector<std::vector<int>> matrix, int row, int col, int value){
+
+    if (row >= 0 && row < matrix.size()){
+        if(col >= 0 && col < matrix.size()){
+            matrix[row][col] = value;
+        }
+        else{
+            throw std::invalid_argument("col index not in range");
+        }
+    }
+    else{
+        throw std::invalid_argument("row index not in range");
+    }
+
+    return matrix;
 }
