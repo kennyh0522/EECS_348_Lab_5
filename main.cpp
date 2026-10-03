@@ -8,6 +8,7 @@
 std::vector<std::vector<int>> read_file();
 std::vector<std::vector<int>> add_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size);
 void print_matrix(std::vector<std::vector<int>> matrix, int matrix_size);
+std::vector<std::vector<int>> multiply_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size);
 
 
 
@@ -55,7 +56,23 @@ int main(){
 
     }
 
+    std::cout << "Matrix A\n";
+    print_matrix(matrix_a, matrix_size);
+    std::cout << "\n";
+
+    std::cout << "Matrix B\n";
+    print_matrix(matrix_b, matrix_size);
+    std::cout << "\n";
+
+    std::cout << "A + B\n";
     print_matrix(add_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
+    std::cout << "\n";
+
+    std::cout << "A * B\n";
+    print_matrix(multiply_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
+    std::cout << "\n";
+
+
 
     return 0;
 }
@@ -80,4 +97,18 @@ void print_matrix(std::vector<std::vector<int>> matrix, int matrix_size){
         }
         std::cout << "\n";
     }
+}
+
+std::vector<std::vector<int>>  multiply_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size){
+    /*Takes two matrices and returns the product of them*/
+    std::vector<std::vector<int>>  new_matrix(matrix_size, std::vector<int>(matrix_size,0));
+
+    for(int row = 0; row < matrix_size; row++){ // row and column will be relative to matrix_1
+        for(int col = 0; col < matrix_size; col ++){
+            for(int k = 0; k < matrix_size; k++){
+                new_matrix[row][col] += matrix_1[row][k] * matrix_2[k][col];
+            }
+        }
+    }
+    return new_matrix;
 }
