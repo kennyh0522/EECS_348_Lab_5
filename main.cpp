@@ -6,6 +6,8 @@
 #include <stdexcept>
 
 std::vector<std::vector<int>> read_file();
+std::vector<std::vector<int>> add_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size);
+void print_matrix(std::vector<std::vector<int>> matrix, int matrix_size);
 
 
 
@@ -37,7 +39,7 @@ int main(){
     int col_index = 0;
     int value;
 
-        // Extract individual numbers from the current line
+    // Extract individual numbers from the current line
     int col_counter = 0;
     while (ss >> value && col_index < matrix_size) {
         if (row_index < matrix_size){
@@ -53,19 +55,29 @@ int main(){
 
     }
 
-    for (int i = 0; i < matrix_size; ++i) {
-        for (int j = 0; j < matrix_size; ++j) {
-        std::cout << matrix_a[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-
-    for (int i = 0; i < matrix_size; ++i) {
-        for (int j = 0; j < matrix_size; ++j) {
-            std::cout << matrix_b[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
+    print_matrix(add_matrices(matrix_a, matrix_b, matrix_size), matrix_size);
 
     return 0;
+}
+
+std::vector<std::vector<int>>  add_matrices(std::vector<std::vector<int>> matrix_1, std::vector<std::vector<int>>  matrix_2, int matrix_size){
+    /*Takes two matrices and returns the sum of them*/
+    std::vector<std::vector<int>>  new_matrix(matrix_size, std::vector<int>(matrix_size,0));
+
+    for(int row = 0; row < matrix_size; row++){
+        for(int col = 0; col < matrix_size; col ++){
+            new_matrix[row][col] = matrix_1[row][col] + matrix_2[row][col];
+        }
+    }
+    return new_matrix;
+}
+
+void print_matrix(std::vector<std::vector<int>> matrix, int matrix_size){
+    /*iterates through a 2d vector array and prints the array out*/
+        for (int i = 0; i < matrix_size; ++i) {
+            for (int j = 0; j < matrix_size; ++j) {
+                std::cout << matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
 }
